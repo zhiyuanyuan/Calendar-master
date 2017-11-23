@@ -132,5 +132,68 @@ public class SplashActivity extends Activity implements View.OnClickListener {
         animator3.start();
 
     }
+
+    @Override
+    public void onBackPressed() {
+
+        mName.setVisibility(View.VISIBLE);
+        mPsw.setVisibility(View.VISIBLE);
+        progress.setVisibility(View.INVISIBLE);
+
+        mInputLayout.setVisibility(View.VISIBLE);
+        inputAnimator1(mInputLayout,mWidth/2,mHeight/2);
+    }
+
+
+    private void inputAnimator1(final View view, float w, float h) {
+
+        AnimatorSet set = new AnimatorSet();
+
+        ValueAnimator animator = ValueAnimator.ofFloat(0, w);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (Float) animation.getAnimatedValue();
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view
+                        .getLayoutParams();
+                params.leftMargin = (int) value;
+                params.rightMargin = (int) value;
+                view.setLayoutParams(params);
+            }
+        });
+
+        ObjectAnimator animator2 = ObjectAnimator.ofFloat(mInputLayout,
+                "scaleX", 0.5f, 1f);
+        set.setDuration(1000);
+        set.setInterpolator(new AccelerateDecelerateInterpolator());
+        set.playTogether(animator, animator2);
+        set.start();
+        set.addListener(new Animator.AnimatorListener() {
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+
+    }
 }
 
