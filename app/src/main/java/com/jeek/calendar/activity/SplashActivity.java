@@ -11,11 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.jeek.calendar.R;
 import com.jeek.calendar.utils.JellyInterpolator;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import cn.bmob.v3.Bmob;
 
 /**
  * Created by admin on 2017/11/23.
@@ -23,6 +29,20 @@ import com.jeek.calendar.utils.JellyInterpolator;
 
 public class SplashActivity extends Activity implements View.OnClickListener {
 
+    @BindView(R.id.tv_login)
+    TextView mTvLogin;
+    @BindView(R.id.et_user_name)
+    EditText mEtUserName;
+    @BindView(R.id.input_layout_name)
+    LinearLayout mInputLayoutName;
+    @BindView(R.id.et_user_pw)
+    EditText mEtUserPw;
+    @BindView(R.id.input_layout_psw)
+    LinearLayout mInputLayoutPsw;
+    @BindView(R.id.progressBar2)
+    ProgressBar mProgressBar2;
+    @BindView(R.id.main_btn_login)
+    TextView mMainBtnLogin;
     private TextView mBtnLogin;
 
     private View progress;
@@ -32,22 +52,22 @@ public class SplashActivity extends Activity implements View.OnClickListener {
     private float mWidth, mHeight;
 
     private LinearLayout mName, mPsw;
+    private EditText mEtUserPassWord;
+    private EditText mEtUserName;
+    private TextView mtvLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
+        ButterKnife.bind(this);
 
         initView();
+        initBomb();
     }
 
     private void initView() {
-        mBtnLogin = (TextView) findViewById(R.id.main_btn_login);
-        progress = findViewById(R.id.layout_progress);
-        mInputLayout = findViewById(R.id.input_layout);
-        mName = (LinearLayout) findViewById(R.id.input_layout_name);
-        mPsw = (LinearLayout) findViewById(R.id.input_layout_psw);
 
         mBtnLogin.setOnClickListener(this);
     }
@@ -62,6 +82,7 @@ public class SplashActivity extends Activity implements View.OnClickListener {
         mPsw.setVisibility(View.INVISIBLE);
 
         inputAnimator(mInputLayout, mWidth, mHeight);
+
 
     }
 
@@ -139,9 +160,8 @@ public class SplashActivity extends Activity implements View.OnClickListener {
         mName.setVisibility(View.VISIBLE);
         mPsw.setVisibility(View.VISIBLE);
         progress.setVisibility(View.INVISIBLE);
-
         mInputLayout.setVisibility(View.VISIBLE);
-        inputAnimator1(mInputLayout,mWidth/2,mHeight/2);
+        inputAnimator1(mInputLayout, mWidth / 2, mHeight / 2);
     }
 
 
@@ -194,6 +214,26 @@ public class SplashActivity extends Activity implements View.OnClickListener {
             }
         });
 
+    }
+
+    private void initBomb() {
+        //第一：默认初始化
+        Bmob.initialize(this, "efb725193ea01c98a82f9332a357be35");
+        // 注:自v3.5.2开始，数据sdk内部缝合了统计sdk，开发者无需额外集成，传渠道参数即可，不传默认没开启数据统计功能
+        //Bmob.initialize(this, "Your Application ID","bmob");
+
+        //第二：自v3.4.7版本开始,设置BmobConfig,允许设置请求超时时间、文件分片上传时每片的大小、文件的过期时间(单位为秒)，
+        //BmobConfig config =new BmobConfig.Builder(this)
+        ////设置appkey
+        //.setApplicationId("Your Application ID")
+        ////请求超时时间（单位为秒）：默认15s
+        //.setConnectTimeout(30)
+        ////文件分片上传时每片的大小（单位字节），默认512*1024
+        //.setUploadBlockSize(1024*1024)
+        ////文件的过期时间(单位为秒)：默认1800s
+        //.setFileExpiration(2500)
+        //.build();
+        //Bmob.initialize(config);
     }
 }
 

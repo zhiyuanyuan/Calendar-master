@@ -1,7 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-
+    signingConfigs {
+        config {
+            keyAlias 'shuishoujishi'
+            keyPassword '123456'
+            storeFile file('F:/github/Calendar-master/Calendar-master/shuishoujishi.jks')
+            storePassword '123456'
+        }
+    }
     compileSdkVersion compile_sdk_version
     buildToolsVersion build_tools_version
     defaultConfig {
@@ -11,17 +18,38 @@ android {
         versionCode 1
         versionName "1.0"
     }
-
+    lintOptions {
+        //lint 遇到 error 时继续 构建
+        abortOnError false
+        //build release 版本 时 开启lint 检测
+        checkReleaseBuilds false
+        // 防止在发布的时候出现因MissingTranslation导致Build Failed!
+        disable 'MissingTranslation'
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
-
+    useLibrary 'org.apache.http.legacy'
+    buildToolsVersion '27.0.1'
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':calendar')
+    compile 'cn.bmob.android:bmob-sdk:3.5.1'
+    compile('com.squareup.retrofit2:retrofit:2.1.0')
+            { exclude group: 'com.squareup.okhttp3' }
+    compile('com.squareup.retrofit2:converter-gson:2.1.0')
+            { exclude group: 'com.google.code.gson'
+                exclude group: 'com.squareup.okhttp3' }
+    compile('com.squareup.retrofit2:adapter-rxjava:2.1.0')
+            { exclude group: 'io.reactivex'
+                exclude group: 'com.squareup.okhttp3' }
+
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }

@@ -25,6 +25,7 @@
                 android:src="@drawable/paw_code" />
 
             <EditText
+                android:id="@+id/et_user_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
@@ -54,6 +55,7 @@
                 android:src="@drawable/paw_left" />
 
             <EditText
+                android:id="@+id/et_user_pw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"

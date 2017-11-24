@@ -17,11 +17,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildToolsVersion '27.0.1'
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':common')
-    compile 'com.google.code.gson:gson:2.7'
     compile 'joda-time:joda-time:2.9.4'
+    implementation 'com.google.code.gson:gson:2.2.4'
 }
