@@ -5,7 +5,6 @@ import cn.bmob.v3.BmobObject;
 public class Person extends BmobObject {
     private String name;
     private String address;
-
     public String getName() {
         return name;
     }

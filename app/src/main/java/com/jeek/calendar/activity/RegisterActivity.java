@@ -6,7 +6,6 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,7 @@ import cn.bmob.v3.listener.SaveListener;
  * Created by admin on 2017/11/23.
  */
 
-public class SplashActivity extends Activity  {
+public class RegisterActivity extends Activity  {
 
     @BindView(R.id.tv_login)
     TextView mTvLogin;
@@ -73,15 +72,30 @@ public class SplashActivity extends Activity  {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_login:
-                startActivity(new Intent(this,RegisterActivity.class));
+
                 break;
             case R.id.main_btn_login:
-                mWidth = mBtnLogin.getMeasuredWidth();
-                mHeight = mBtnLogin.getMeasuredHeight();
-                mInputLayoutName.setVisibility(View.INVISIBLE);
-                mInputLayoutPsw.setVisibility(View.INVISIBLE);
-                inputAnimator(mInputLayout, mWidth, mHeight);
+               /* mWidth = mBtnLogin.getMeasuredWidth();
+                //    mInputLayoutName.setVisibility(View.INVISIBLE);
+                //    mInputLayoutPsw.setVisibility(View.INVISIBLE);
+                //     inputAnimator(mInputLayout, mWidth, mHeight);
+                mHeight = mBtnLogin.getMeasuredHeight();*/
+                String userName = mEtUserName.getText().toString().trim();
+                String password = mEtUserPw.getText().toString().trim();
+                BmobUser user=new BmobUser();
+                user.setUsername(userName);
+                user.setPassword(password);
+                user.signUp(new SaveListener<BmobUser>() {
+                    @Override
+                    public void done(BmobUser bmobUser, BmobException e) {
+                        if(e==null){
+                            Toast.makeText(RegisterActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(RegisterActivity.this,e.toString(),Toast.LENGTH_SHORT).show();
+                        }
 
+                    }
+                });
                 break;
         }
     }
@@ -131,22 +145,7 @@ public class SplashActivity extends Activity  {
                 progress.setVisibility(View.VISIBLE);
                 progressAnimator(progress);
                 mInputLayout.setVisibility(View.INVISIBLE);
-                BmobUser bmobUser=new BmobUser();
-                String userName = mEtUserName.getText().toString().trim();
-                String password = mEtUserPw.getText().toString().trim();
-                bmobUser.setUsername(userName);
-                bmobUser.setPassword(password);
-                bmobUser.login(new SaveListener<BmobUser>() {
-                    @Override
-                    public void done(BmobUser bmobUser, BmobException e) {
-                        if(e==null){
-                            Toast.makeText(SplashActivity.this,"登陆成功",Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                        }else{
-                            Toast.makeText(SplashActivity.this,"登陆失败",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+
             }
 
             @Override
@@ -171,15 +170,7 @@ public class SplashActivity extends Activity  {
 
     }
 
-    @Override
-    public void onBackPressed() {
 
-        mInputLayoutName.setVisibility(View.VISIBLE);
-        mInputLayoutPsw.setVisibility(View.VISIBLE);
-        progress.setVisibility(View.INVISIBLE);
-        mInputLayout.setVisibility(View.VISIBLE);
-        inputAnimator1(mInputLayout, mWidth / 2, mHeight / 2);
-    }
 
 
     private void inputAnimator1(final View view, float w, float h) {
